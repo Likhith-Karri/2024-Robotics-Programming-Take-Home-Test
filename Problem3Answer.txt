@@ -1,0 +1,32 @@
+Line By Line Explanation: The code starts off by inheriting the variables and methods of the SubsytemBase class to the Elevator class (the class we’re currently coding in) 
+by using the extends keyword. Then a variable that stores the information whether the claw of the robot is extended or not is set to false, meaning the claw is not extended
+, but is modified later on in the code. Then, two CANSparkMax Objects are created representing the motors for the elevator and pivot. Then the PID controllers for the elevator 
+and pivot motors are declared. Afterward, a Compressor object and Solenoid object are declared. These will be used for the pneumatics (gas / air pressure control). 
+A single solenoid is declared and a single compressor is declared for that. Afterward, a double solenoid, occupying two ports (1 and 2) is declared and is used for brake control.
+Then, the starting position of the elevator motor encoder iis set to a specific value that is adjusted or "normalized" based on the result of a method called normalizeEncoderElevator(0).
+The elevator motor is set to have no inversion. Next, the pivot motor encoder’s position is set to 0. Subsequently, a variable is created to store the PID Controller for the 
+Pivot Motor and then the pivot motor is inverted. Afterward, a veriable is made to store the PID Controller of the Elevator motor. The PID Values and FF (Feedforward) values
+are set to certain amounts (likely were tuned according to the robot). The feedforward term helps in providing an additional control signal to the motor based on the desired setpoint,
+without relying on feedback from sensors. It contributes to achieving a faster and more accurate response to changes in the setpoint. Proportional adjusts the control input based on 
+the current error, integral accumulates past errors over time, and derivative predicts future errors by considering the rate of change, collectively minimizing the difference between 
+the desired setpoint and the actual output in a PID controller. Next, the enablePneumatics() method is called and it makes sure that the compressor (one of the pneumatics) is enabled 
+and if the compressor isn’t already enabled, it enables it. After that, it sets the break solenoid to a forward position. Next, we have a getter method for the isClawExtended (tracks 
+whether the claw is extended or not) variable. Then we see the enablePneumatics method (already mentioned above). Afterward, we encounter the period method which runs every 20ms. 
+In that, the Smart Dashboard is being constantly updated. It displays the normalized encoder elevator value and the non normalized (raw) value. It does the same for the pivot encoder,
+normalized and raw. After that we see a try-catch block that attempts to perform certain actions and catches any Error that occurs, printing it to the console. Then we see the 
+enableSolenoid() and disableSolenoid() functions. The enableSolenoid one runs when the claw is not extended and enables the solenoid. The disableSolenoid one runs when the claw 
+is extended and disables the solenoid. After that is a method to toggle the position of the brake solenoid. The lowerBrake() method sets the brake solenoid to the reverse 
+position (to lower it - exactly what the name implies). Next we have the togglePneumatics method. It first toggles the state of the solenoid if the claw is extended, once it’s
+done, it sets the isClawExtended variable to false (indicating the claw is no longer extended). Then we have another if statement and it checks if the compressor is currently enabled,
+if it is, it disables the compressor. With that if statement, comes an else statement which calls the enablePneumatics function (enabling the compressor as mentioned way above). 
+After all that we have a void method called goTo which takes in the variables (type: double) setPointElevator and setPointPivot as parameters. In the method, the controller is 
+basically told to have the elevator at a certain position (the parameter passed in setReference) and the other parameter for it the ControlType.kSmartMotion is a specific way of
+controlling a motion (a smart and precise way). The pivot controller is told to do the same thing. Last, we have the stopMotor() method which has two lines of code. One which stops
+the motor for the elevator and one for the pivot. 
+
+Overall Explanation: Overall, this code is utilized to control an elevator subsystem and a claw (the pneumatic mechanism). The PID controllers are utlized to regulate the movement 
+of the elevator and pivot motors while making sure that all that is precisely and accurately positioned. Then the code incorporates the pneumatic control. It manages the solenoids 
+to extend or retract a claw mechanism (and breaking) and enables or disables the compressor for pneumatics. Also, the elevator's position and pivot are monitored in real-time using
+the periodic updates to the SmartDashboard. Also, there are numerous methods in the code which are commands which allow for the elevator to go to specific setpoints, stop its motion, 
+and they also control the claw mechanism by adjusting and controlling the solenoids. In conclusion, the code controls the robot’s elevator subsystem, ensuring precise movement by using 
+the PID Controllers, managing pneumatic functions like claw extension, and providing real-time monitoring of the elevator’s status. 
